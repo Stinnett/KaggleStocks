@@ -30,7 +30,8 @@ feature_columns = [tf.contrib.layers.real_valued_column("", dimension=x_train.sh
 
 classifier = SKCompat(learn.DNNRegressor(label_dimension=y_train.shape[1], feature_columns=feature_columns,
                                          hidden_units=[100, 50, 20]))
-classifier.fit(x_train, y_train, steps=100)
+classifier.fit(x_train, y_train, steps=100000, batch_size=100)
 score = metrics.r2_score(y_test, classifier.predict(x_test)['scores'])
+accuracy = metrics.mean_squared_error(y_test, classifier.predict(x_test)['scores'])
 # score= np.linalg.norm(y_test-classifier.predict(x_test)['scores'])/np.linalg.norm(y_test)
-print("Accuracy: %f" % score)
+print("Score: %f, Accuracy: %f" % (score, accuracy))
